@@ -48,35 +48,34 @@ public class BMPCore {
               }
               // Sepia
               else {
+                byte r, g, b;
                 int R = Pixeles[i][j + 2] & 0xff;
                 int G = Pixeles[i][j + 1] & 0xff;
                 int B = Pixeles[i][j] & 0xff;
 
-                int tr = (int) Math.round(0.393 * R + 0.769 * G + 0.189 * B);
-                int tg = (int) Math.round(0.349 * R + 0.686 * G + 0.168 * B);
-                int tb = (int) Math.round(0.272 * R + 0.534 * G + 0.131 * B);
+                int Tr = (int)Math.round(0.393 * R + 0.769 * G + 0.189 * B);
+                int Tg = (int)Math.round(0.349 * R + 0.686 * G + 0.168 * B);
+                int Tb = (int)Math.round(0.272 * R + 0.534 * G + 0.131 * B);
 
-                byte r, g, b;
-
-                if (tr > 255) {
+                if (Tr > 255) {
                   r = (byte)255;
                 }
                 else {
-                  r = (byte)tr; 
+                  r = (byte)Tr; 
                 }
 
-                if (tg > 255) {
+                if (Tg > 255) {
                   g = (byte)255;
                 }
                 else {
-                  g = (byte)tg; 
+                  g = (byte)Tg; 
                 }
 
-                if (tb > 255) {
+                if (Tb > 255) {
                   b = (byte)255;
                 }
                 else {
-                  b = (byte)tb; 
+                  b = (byte)Tb; 
                 }
 
                 Pixeles[i][j + 2] = r;
@@ -107,7 +106,7 @@ public class BMPCore {
       }
     }
     catch (FileNotFoundException Error) {
-      System.out.println("*No se ha encontrado el archivo*");
+      System.out.println("*No se ha enconTrado el archivo*");
     }
   }
 }

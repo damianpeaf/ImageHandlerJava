@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.regex.Pattern;
 
-//javac *.java && clear && java BMPImageHandler -rotate Imagen.bmp
+//javac *.java && clear && java BMPImageHandler -rotate Muestra2.bmp
 
 public class BMPRotations {
   public void Rotations(String Nombre) throws Exception {
@@ -24,40 +24,79 @@ public class BMPRotations {
 
         int Aux = 54;
 
-        for (int j = 0; j < Height; j++) {
-          for (int i = 0; i < Width * 3; i++) {
-            Pixeles[j][i] = Datos2[Aux];
+        for (int i = 0; i < Height; i++) {
+          for (int j = 0; j < Width * 3; j++) {
+            Pixeles[i][j] = Datos2[Aux];
             Aux++;
           }
         }
 
+        // Rotacion horizontal
+
         byte[][] PixelesAux = new byte[Height][Width * 3];
-        int indiceWidth = (Width * 3) -1;
+        int indiceWidth = (Width * 3) - 1;
         int indiceHeight = 0;
 
+        for (int i = Height - 1; i >= 0 ; i--) {
+          indiceWidth = (Width * 3) - 1;
 
-        for (int j = (Height) - 1; j >= 0 ; j--) {
-          indiceWidth = (Width * 3) -1;
-          for (int i = (Width * 3)-1; i >=0; i--) {
-            PixelesAux[indiceHeight][indiceWidth] = Pixeles[j][i];
+          for (int j = indiceWidth; j >= 0; j--) {
+            PixelesAux[indiceHeight][indiceWidth] = Pixeles[i][j];
             indiceWidth--;
           }
+
           indiceHeight++;
         }
 
         Aux = 54;
 
-          for (int j = 0; j < Height; j++) {
-            for (int i = 0; i < Width * 3; i++) {
-              Datos2[Aux] = PixelesAux[j][i];
-              Aux++;
-            }
+        for (int i = 0; i < Height; i++) {
+          for (int j = 0; j < Width * 3; j++) {
+            Datos2[Aux] = PixelesAux[i][j];
+            Aux++;
+          }
+        }
+
+        FileOutputStream Imagen = new FileOutputStream(Nombre.substring(0, Nombre.indexOf(".")) + "HRotation.bmp");
+        Imagen.write(Datos2);
+        Imagen.close();
+
+        // Termina Rotacion horizontal
+
+        // Rotacion vertical
+
+        indiceWidth = 0;
+        indiceHeight = Height-1;
+
+        for (int i = Height - 1; i >= 0 ; i--) {
+          indiceWidth = 0;
+
+          for (int j = (Width*3)-1; j >= 0; j--) {
+            PixelesAux[indiceHeight][indiceWidth] = Pixeles[i][j];
+            indiceWidth++;
           }
 
-          FileOutputStream Imagen = new FileOutputStream("volteadoHorizontal.bmp");
-          Imagen.write(Datos2);
-          Imagen.close();
+          indiceHeight--;
+        }
+
+        Aux = 54;
+
+        for (int i = 0; i < Height; i++) {
+          for (int j = 0; j < Width * 3; j+=3) {
+            Datos2[Aux] = PixelesAux[i][j+2];
+            Datos2[Aux+1] = PixelesAux[i][j+1];
+            Datos2[Aux+2] = PixelesAux[i][j];
+            Aux+=3;
+          }
+        }
+
+        FileOutputStream Imagen2 = new FileOutputStream(Nombre.substring(0, Nombre.indexOf(".")) + "VRotation.bmp");
+        Imagen2.write(Datos2);
+        Imagen2.close();
+
+        // Termina Rotacion vertical
         
+
       }
       else {
         System.out.println("¡Tipo de archivo ingresado incorrecto!");
