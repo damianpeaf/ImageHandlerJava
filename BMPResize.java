@@ -21,15 +21,16 @@ public class BMPResize {
         Archivo.read(Datos2);
         Archivo.close();
 
-        int WidhtAplastado=(int)Math.round(Width * 3 * 0.50);
+        int WidhtAplastado=(int)Math.round(Width * 3 /2);
 
         byte[][] PixelesThin = new byte[Height][WidhtAplastado];
 
         byte[] ThinBytes = new byte[WidhtAplastado*Height + 54];
 
 
-        byte[][] Pixeles = new byte[Height][Width * 3];
+        // Matriz de pixeles
 
+        byte[][] Pixeles = new byte[Height][Width * 3];
         int Aux = 54;
 
         for (int i = 0; i < Height; i++) {
@@ -38,37 +39,40 @@ public class BMPResize {
             Aux++;
           }
         }
+        // -------
 
         for (int i = 0; i < Height; i++) {
           for (int j = 0; j < WidhtAplastado; j+=3) {
 
-            PixelesThin[i][j]=Pixeles[i][j];
-            PixelesThin[i][j+1]=Pixeles[i][j+1];
-            PixelesThin[i][j+2]=Pixeles[i][j+2];
+            PixelesThin[i][j]=Pixeles[i][2*j];
+            PixelesThin[i][j+1]=Pixeles[i][2*j+1];
+            PixelesThin[i][j+2]=Pixeles[i][2*j+2];
 
           }
         }
 
         // Cambiar datos de cabecera
+        // File size (bytes 2,3,4,5)
+        byte[] fileSBy =convertIntToByteArray2(WidhtAplastado*Height + 54);
+        Datos2[2]=fileSBy[3];
+        Datos2[3]=fileSBy[2];
+        Datos2[4]=fileSBy[1];
+        Datos2[5]=fileSBy[0];
         
         // Width (bytes 16 17 18 19)
         byte[] widthBy =convertIntToByteArray2(Width/2);
-        Datos2[16]=widthBy[3];
-        Datos2[17]=widthBy[2];
-        Datos2[18]=widthBy[1];
-        Datos2[19]=widthBy[0];
+        Datos2[18]=widthBy[3];
+        Datos2[19]=widthBy[2];
+        Datos2[20]=widthBy[1];
+        Datos2[21]=widthBy[0];
 
-        // Heigth (bytes 25, 26, 27, 28)
+        // Heigth (bytes 22)
         byte[] heigthBy =convertIntToByteArray2(Height);
         Datos2[22]=heigthBy[3];
         Datos2[23]=heigthBy[2];
         Datos2[24]=heigthBy[1];
         Datos2[25]=heigthBy[0];
         
-
-        // height en la 22? wifht 16
-
-
         
         for (int i = 0; i < 54; i++) {
           ThinBytes[i]=Datos2[i];
@@ -86,6 +90,70 @@ public class BMPResize {
         FileOutputStream Imagen = new FileOutputStream(Nombre.substring(0, Nombre.indexOf(".")) + "Thin.bmp");
         Imagen.write(ThinBytes);
         Imagen.close();
+
+        // Termina thin -------------------------------------- 
+
+        Archivo = new FileInputStream(Nombre);
+        byte[] Datos3 = new byte[Width * 3 * Height + 54];
+        Archivo.read(Datos3);
+        Archivo.close();
+
+        int HeightAplastado=(int)Math.round(Height/2);
+
+        byte[][] PixelesFlat = new byte[HeightAplastado][Width*3];
+
+        byte[] FlatBytes = new byte[HeightAplastado*Width*3 + 54];
+
+        for (int i = 0; i < HeightAplastado; i++) {
+          for (int j = 0; j < Width*3; j+=3) {
+
+            PixelesFlat[i][j]=Pixeles[2*i][j];
+            PixelesFlat[i][j+1]=Pixeles[2*i][j+1];
+            PixelesFlat[i][j+2]=Pixeles[2*i][j+2];
+
+          }
+        }
+
+        // Cambiar datos de cabecera
+        // File size (bytes 2,3,4,5)
+        // fileSBy =convertIntToByteArray2(HeightAplastado*Width*3 + 54);
+        // Datos3[2]=fileSBy[3];
+        // Datos3[3]=fileSBy[2];
+        // Datos3[4]=fileSBy[1];
+        // Datos3[5]=fileSBy[0];
+        
+        // // Width (bytes 16 17 18 19)
+        // widthBy =convertIntToByteArray2(Width);
+        // Datos3[18]=widthBy[3];
+        // Datos3[19]=widthBy[2];
+        // Datos3[20]=widthBy[1];
+        // Datos3[21]=widthBy[0];
+
+        // // Heigth (bytes 22)
+        // heigthBy =convertIntToByteArray2(Height/2);
+        // Datos3[22]=heigthBy[3];
+        // Datos3[23]=heigthBy[2];
+        // Datos3[24]=heigthBy[1];
+        // Datos3[25]=heigthBy[0];
+        
+        
+        for (int i = 0; i < 54; i++) {
+          FlatBytes[i]=Datos3[i];
+        }
+
+        Aux = 54;
+
+        for (int i = 0; i < HeightAplastado; i++) {
+          for (int j = 0; j < Width*3; j++) {
+            FlatBytes[Aux] = PixelesFlat[i][j];
+            Aux++;
+          }
+        }
+
+        FileOutputStream Imagen2 = new FileOutputStream(Nombre.substring(0, Nombre.indexOf(".")) + "Flat.bmp");
+        Imagen2.write(FlatBytes);
+        Imagen2.close();
+
       }
       else {
         System.out.println("¡Tipo de archivo ingresado incorrecto!");

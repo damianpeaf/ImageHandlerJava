@@ -20,6 +20,9 @@ public class BMPRotations {
         Archivo.read(Datos2);
         Archivo.close();
 
+
+        // Matriz de pixeles
+
         byte[][] Pixeles = new byte[Height][Width * 3];
 
         int Aux = 54;
