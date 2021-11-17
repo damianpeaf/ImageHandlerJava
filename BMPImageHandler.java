@@ -2,7 +2,13 @@ public class BMPImageHandler {
   public static void main(String[] args) throws Exception {
     if (args.length == 1) {
       if (args[0].equals("-help")) {
-        System.out.println("help");
+        System.out.println("java BMPImageHandler -core imagen.bmp");
+        System.out.println("java BMPImageHandler -rotate imagen.bmp");
+        System.out.println("java BMPImageHandler -resize imagen.bmp");
+        System.out.println("java BMPImageHandler -grayscale imagen.bmp");
+        System.out.println("java BMPImageHandler -rle imagen.bmp");
+        System.out.println("java BMPImageHandler -kernel kernel.txt imagen.bmp");
+        System.out.println("java BMPImageHandler -all kernel.txt imagen.bmp");
       }
       else {
         System.out.println("Comando incorrecto!");
@@ -10,37 +16,50 @@ public class BMPImageHandler {
     } 
     else if(args.length == 2) {
       if (args[0].equals("-core")) {
-        BMPCore Si = new BMPCore();
-        Si.Core(args[1]);
+        BMPCore Imagen = new BMPCore();
+        Imagen.Core(args[1]);
       } 
       else if(args[0].equals("-rotate")) {
-        BMPRotations Si = new BMPRotations();
-        Si.Rotations(args[1]);
+        BMPRotations Imagen = new BMPRotations();
+        Imagen.Rotations(args[1]);
       }
       else if(args[0].equals("-resize")) {
-        BMPResize Si = new BMPResize();
-        Si.Resize(args[1]);
+        BMPResize Imagen = new BMPResize();
+        Imagen.Resize(args[1]);
       }
       else if(args[0].equals("-grayscale")) {
-        BMPGrayscale Si = new BMPGrayscale();
-        Si.Grayscale(args[1]);
+        BMPGrayscale Imagen = new BMPGrayscale();
+        Imagen.Grayscale(args[1]);
       }
       else if(args[0].equals("-rle")) {
-        System.out.println("rle");
+        BMPRunLengthEncoding Imagen = new BMPRunLengthEncoding();
+        Imagen.RunLengthEncoding(args[1]);
       }
       else {
-        System.out.println("Comando incorrecto!");
+        System.out.println("¡Comando incorrecto!");
       }
     }
     else if(args.length == 3) {
       if(args[0].equals("-kernel")) {
-        System.out.println("kernel");
+        BMPRunKernelFilter Imagen = new BMPRunKernelFilter();
+        Imagen.RunKernelFilter(args[1], args[2]);
       }
       else if(args[0].equals("-all")) {
-        System.out.println("all");
+        BMPCore imagenCore = new BMPCore();
+        imagenCore.Core(args[2]);
+        BMPRotations imagenRotations = new BMPRotations();
+        imagenRotations.Rotations(args[2]);
+        BMPResize imagenResize = new BMPResize();
+        imagenResize.Resize(args[2]);
+        BMPGrayscale imagenGrayScale = new BMPGrayscale();
+        imagenGrayScale.Grayscale(args[2]);
+        BMPRunLengthEncoding imagenEncoding = new BMPRunLengthEncoding();
+        imagenEncoding.RunLengthEncoding(args[2]);
+        BMPRunKernelFilter imagenKernel = new BMPRunKernelFilter();
+        imagenKernel.RunKernelFilter(args[1], args[2]);
       } 
       else {
-        System.out.println("Comando incorrecto!");
+        System.out.println("¡Comando incorrecto!");
       }
     }
     else {

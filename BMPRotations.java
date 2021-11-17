@@ -20,11 +20,7 @@ public class BMPRotations {
         Archivo.read(Datos2);
         Archivo.close();
 
-
-        // Matriz de pixeles
-
         byte[][] Pixeles = new byte[Height][Width * 3];
-
         int Aux = 54;
 
         for (int i = 0; i < Height; i++) {
@@ -35,7 +31,6 @@ public class BMPRotations {
         }
 
         // Rotacion horizontal
-
         byte[][] PixelesAux = new byte[Height][Width * 3];
         int indiceWidth = (Width * 3) - 1;
         int indiceHeight = 0;
@@ -64,10 +59,7 @@ public class BMPRotations {
         Imagen.write(Datos2);
         Imagen.close();
 
-        // Termina Rotacion horizontal
-
         // Rotacion vertical
-
         indiceWidth = 0;
         indiceHeight = Height-1;
 
@@ -85,21 +77,17 @@ public class BMPRotations {
         Aux = 54;
 
         for (int i = 0; i < Height; i++) {
-          for (int j = 0; j < Width * 3; j+=3) {
-            Datos2[Aux] = PixelesAux[i][j+2];
-            Datos2[Aux+1] = PixelesAux[i][j+1];
-            Datos2[Aux+2] = PixelesAux[i][j];
-            Aux+=3;
+          for (int j = 0; j < Width * 3; j += 3) {
+            Datos2[Aux] = PixelesAux[i][j + 2];
+            Datos2[Aux + 1] = PixelesAux[i][j + 1];
+            Datos2[Aux + 2] = PixelesAux[i][j];
+            Aux += 3;
           }
         }
 
         FileOutputStream Imagen2 = new FileOutputStream(Nombre.substring(0, Nombre.indexOf(".")) + "VRotation.bmp");
         Imagen2.write(Datos2);
         Imagen2.close();
-
-        // Termina Rotacion vertical
-        
-
       }
       else {
         System.out.println("¡Tipo de archivo ingresado incorrecto!");
